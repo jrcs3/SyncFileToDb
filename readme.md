@@ -14,3 +14,20 @@ When I compare the 2 lists, the items are split into 4 lists:
  
  Checks:
  - *toSkipQuery.Count* + *toChangeSsnQuery.Count* + *toAddQuery.Count* == *employeesCsv.Count* - if not fail the process
+	 
+## SyncFileToDbAdoNet
+
+Break the changes into the 4 groups and make the changes with ADO.NET one at a time.
+
+Results in lots of small queries to the database for updates
+
+Elapsed time in ms: 962
+
+## SyncFileToDbEFSimple
+
+Experiment using Entity Framework (EF) using a simple drop and write full list (this is how the original app worked). 
+The hope was that EF would be smart enough to just make the net changes, That assumption proved to be false.
+
+Results in one query to the database for updates
+
+Elapsed time in ms: 3635

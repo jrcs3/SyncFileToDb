@@ -1,7 +1,14 @@
-﻿namespace SyncFileToDb
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CsvCommonLib
 {
     public class EmployeeIdAndSsn
     {
+        public EmployeeIdAndSsn()
+        {
+            
+        }
         public EmployeeIdAndSsn(string employeeId, string ssn)
         {
             EmployeeId = employeeId;
@@ -13,8 +20,9 @@
             return ssn.Replace("-", "");
         }
 
+        [Key]
         public string EmployeeId { get; set; }
         public string Ssn { get; set; }
-      
+
     }
 }

@@ -1,23 +1,21 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using CsvHelper;
-using SyncFileToDb;
-using System.Collections.Generic;
+using CsvCommonLib;
 using System.Data;
 using System.Data.SqlClient;
-using System.Formats.Asn1;
-using System.Globalization;
 
-string filePath = "data\\EmployeeIdAndSsn.csv";
+string directory = Tools.GetDirectoryInParent("data");
+
+string filePath = Path.Combine(directory, "EmployeeIdAndSsn.csv");
+
+List<EmployeeIdAndSsn> employeesCsv = Tools.GetCsv(filePath);
 
 string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=InsecureDB;Persist Security Info=False;Integrated Security=true;";
-
+var watch = System.Diagnostics.Stopwatch.StartNew();
 using (SqlConnection con = new SqlConnection(connectionString))
 {
     con.Open();
 
     List<EmployeeIdAndSsn> employeesDb = GetDb(con);
-
-    List<EmployeeIdAndSsn> employeesCsv = GetCsv(filePath);
 
     var toAddQuery = employeesCsv.Where(p => employeesDb.All(p2 => p2.EmployeeId != p.EmployeeId)).ToList();
 
@@ -58,6 +56,9 @@ using (SqlConnection con = new SqlConnection(connectionString))
         UpdateInDb(con, kvp);
     }
 }
+watch.Stop();
+var elapsedMs = watch.ElapsedMilliseconds;
+Console.WriteLine($"elapsedMs: {elapsedMs}");
 
 void UpdateInDb(SqlConnection con, EmployeeIdAndSsn kvp)
 {
@@ -143,26 +144,6 @@ List < EmployeeIdAndSsn > GetDb(SqlConnection con)
             string employeeId = (string)reader[employeeIdOrdnal];
             string ssn = (string)reader[ssnOrdnal];
             rVal.Add(new EmployeeIdAndSsn(employeeId, ssn));
-        }
-    }
-    return rVal;
-}
-List<EmployeeIdAndSsn> GetCsv(string filePath)
-{
-    List<EmployeeIdAndSsn> rVal = new();
-    using (var reader = new StreamReader(filePath))
-    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-    {
-        var anonymousTypeDefinition = new
-        {
-            EmployeeId = string.Empty,
-            SSN = string.Empty
-        };
-        var records = csv.GetRecords(anonymousTypeDefinition);
-
-        foreach (var record in records)
-        {
-            rVal.Add(new EmployeeIdAndSsn(record.EmployeeId, record.SSN));
         }
     }
     return rVal;

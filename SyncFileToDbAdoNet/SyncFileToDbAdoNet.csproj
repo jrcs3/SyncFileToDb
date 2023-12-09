@@ -9,8 +9,11 @@
 
   <ItemGroup>
     <PackageReference Include="ADO.Net.Client" Version="1.4.4" />
-    <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CsvCommonLib\CsvCommonLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
