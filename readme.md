@@ -67,8 +67,8 @@ to both projects. This experiment was a flop.
 
 ### Third Experiment
 In the [Third_Experiment](https://github.com/jrcs3/SyncFileToDb/releases/tag/Third_Experiment), added a third console app
-[SyncFileToDbEFManuallyFilter](https://github.com/jrcs3/SyncFileToDb/tree/Second_Experiment/SyncFileToDbEFManuallyFilter), moved the common
-Entity Framework (EF) code to the DLL [EFCommonLib](https://github.com/jrcs3/SyncFileToDb/tree/Second_Experiment/EFCommonLib). Under the 
+[SyncFileToDbEFManuallyFilter](https://github.com/jrcs3/SyncFileToDb/tree/Third_Experiment/SyncFileToDbEFManuallyFilter), moved the common
+Entity Framework (EF) code to the DLL [EFCommonLib](https://github.com/jrcs3/SyncFileToDb/tree/Third_Experiment/EFCommonLib). Under the 
 test conditions, *SyncFileToDbEFManuallyFilter* did not perform as well as *SyncFileToDbAdoNet*, but will do some more experimentation with
 the actual data during business hours.
 
