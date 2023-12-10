@@ -50,6 +50,19 @@ perform better for larger batch sizes.
 
 Elapsed time in ms second run: 3490
 
+## SyncFileToDbBatchAdoNet
+
+Drop table an insert the whole CSV with ADO.NET in batches. Build a large INSERT INTO query with paramaters.
+The number of records inserted can be configured. 
+
+I did this experiment because the origional application did a truncate and bulk import, but did it as single record inserts.
+The hope is that this method would perform better because it made fewer DB calls.
+
+Elapsed time in ms, batch size 1000: 639
+Elapsed time in ms, batch size 100: 663
+Elapsed time in ms, batch size 10: 873
+Elapsed time in ms, batch size 1: 1001
+
 ## Experiments
 
 ### First Experiment
@@ -71,6 +84,11 @@ In the [Third_Experiment](https://github.com/jrcs3/SyncFileToDb/releases/tag/Thi
 Entity Framework (EF) code to the DLL [EFCommonLib](https://github.com/jrcs3/SyncFileToDb/tree/Third_Experiment/EFCommonLib). Under the 
 test conditions, *SyncFileToDbEFManuallyFilter* did not perform as well as *SyncFileToDbAdoNet*, but will do some more experimentation with
 the actual data during business hours.
+
+### Fourth Experiment
+In the [Fourth_Experiment](https://github.com/jrcs3/SyncFileToDb/releases/tag/Fourth_Experiment), added a fourth console app
+[SyncFileToDbBatchAdoNet](https://github.com/jrcs3/SyncFileToDb/tree/Fourth_Experiment/SyncFileToDbBatchAdoNet) which does a drop and
+replace; the replace is done with massive INSERT INTO queries to reduce the number of interactions with the SQL Server.
 
 ## Other Files
 
