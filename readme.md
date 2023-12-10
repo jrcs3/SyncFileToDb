@@ -74,6 +74,6 @@ the actual data during business hours.
 
 ## Other Files
 
-- *EmployeeIdAndSsn.csv* - the CSV file I'm syncing with the database.
-- *EmployeeIdAndSsn.sql* - query to make the test table.
-- *messUpDb.sql* - script to mess up the table between runs.
+- [EmployeeIdAndSsn.csv](https://github.com/jrcs3/SyncFileToDb/blob/master/data/EmployeeIdAndSsn.csv) - the CSV file I'm syncing with the database.
+- [EmployeeIdAndSsn.sql](https://github.com/jrcs3/SyncFileToDb/blob/master/data/EmployeeIdAndSsn.sql) - query to make the test table.
+- [messUpDb.sql](https://github.com/jrcs3/SyncFileToDb/blob/master/data/messUpDb.sql) - script to mess up the table between runs.
