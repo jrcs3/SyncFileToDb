@@ -7,7 +7,7 @@ string directory = Tools.GetDirectoryInParent("data");
 
 string filePath = Path.Combine(directory, "EmployeeIdAndSsn.csv");
 
-List<EmployeeIdAndSsn> employeesCsv = Tools.GetCsv(filePath);
+List<EmployeeIdAndSsnForCsv> employeesCsv = Tools.GetCsv(filePath);
 
 string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=InsecureDB;Persist Security Info=False;Integrated Security=true;";
 var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -15,7 +15,7 @@ using (SqlConnection con = new SqlConnection(connectionString))
 {
     con.Open();
 
-    List<EmployeeIdAndSsn> employeesDb = GetDb(con);
+    List<EmployeeIdAndSsnForCsv> employeesDb = GetDb(con);
 
     var toAddQuery = employeesCsv.Where(p => employeesDb.All(p2 => p2.EmployeeId != p.EmployeeId)).ToList();
 
@@ -60,7 +60,7 @@ watch.Stop();
 var elapsedMs = watch.ElapsedMilliseconds;
 Console.WriteLine($"elapsedMs: {elapsedMs}");
 
-void UpdateInDb(SqlConnection con, EmployeeIdAndSsn kvp)
+void UpdateInDb(SqlConnection con, EmployeeIdAndSsnForCsv kvp)
 {
     string insertQuery = "UPDATE dbo.EmployeeIdAndSsn  SET ssn = @ssn WHERE EmployeeId = @EmployeeId";
 
@@ -86,7 +86,7 @@ void UpdateInDb(SqlConnection con, EmployeeIdAndSsn kvp)
     topiccmd.ExecuteNonQuery();
 }
 
-void DeleteFromDb(SqlConnection con, EmployeeIdAndSsn kvp)
+void DeleteFromDb(SqlConnection con, EmployeeIdAndSsnForCsv kvp)
 {
     string insertQuery = "DELETE dbo.EmployeeIdAndSsn WHERE EmployeeId = @EmployeeId";
 
@@ -104,7 +104,7 @@ void DeleteFromDb(SqlConnection con, EmployeeIdAndSsn kvp)
     topiccmd.ExecuteNonQuery();
 }
 
-void WriteToDb(SqlConnection con, EmployeeIdAndSsn kvp)
+void WriteToDb(SqlConnection con, EmployeeIdAndSsnForCsv kvp)
 {
     string insertQuery = "INSERT INTO dbo.EmployeeIdAndSsn(EmployeeId,ssn) VALUES (@EmployeeId,@ssn)";
 
@@ -130,9 +130,9 @@ void WriteToDb(SqlConnection con, EmployeeIdAndSsn kvp)
     topiccmd.ExecuteNonQuery();
 }
 
-List < EmployeeIdAndSsn > GetDb(SqlConnection con)
+List < EmployeeIdAndSsnForCsv > GetDb(SqlConnection con)
 {
-    List<EmployeeIdAndSsn> rVal = new();
+    List<EmployeeIdAndSsnForCsv> rVal = new();
     string selectTopics = "SELECT EmployeeId,ssn FROM dbo.EmployeeIdAndSsn";
     SqlCommand topiccmd = new SqlCommand(selectTopics, con);
     using (var reader = topiccmd.ExecuteReader())
@@ -143,7 +143,7 @@ List < EmployeeIdAndSsn > GetDb(SqlConnection con)
         {
             string employeeId = (string)reader[employeeIdOrdnal];
             string ssn = (string)reader[ssnOrdnal];
-            rVal.Add(new EmployeeIdAndSsn(employeeId, ssn));
+            rVal.Add(new EmployeeIdAndSsnForCsv(employeeId, ssn));
         }
     }
     return rVal;

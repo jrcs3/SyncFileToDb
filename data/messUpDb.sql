@@ -1,5 +1,3 @@
-USE [InsecureDB]
-GO
 
 DELETE dbo.EmployeeIdAndSsn WHERE EmployeeId IN (1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987)
 
@@ -17,4 +15,4 @@ VALUES
 ('9999','999999999')
 
 
-UPDATE dbo.EmployeeIdAndSsn SET SSN = '123456789' WHERE EmployeeId IN (10,100,1000)
+UPDATE dbo.EmployeeIdAndSsn SET SSN = '123456' + EmployeeId WHERE EmployeeId IN ('111','222','333')

@@ -27,9 +27,9 @@ namespace CsvCommonLib
 
             return string.Empty;
         }
-        public static List<EmployeeIdAndSsn> GetCsv(string filePath)
+        public static List<EmployeeIdAndSsnForCsv> GetCsv(string filePath)
         {
-            List<EmployeeIdAndSsn> rVal = new();
+            List<EmployeeIdAndSsnForCsv> rVal = new();
             using (var reader = new StreamReader(filePath))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
@@ -42,7 +42,7 @@ namespace CsvCommonLib
 
                 foreach (var record in records)
                 {
-                    rVal.Add(new EmployeeIdAndSsn(record.EmployeeId, record.SSN));
+                    rVal.Add(new EmployeeIdAndSsnForCsv(record.EmployeeId, record.SSN));
                 }
             }
             return rVal;

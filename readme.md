@@ -19,15 +19,61 @@ When I compare the 2 lists, the items are split into 4 lists:
 
 Break the changes into the 4 groups and make the changes with ADO.NET one at a time.
 
-Results in lots of small queries to the database for updates
+Results in lots of small queries to the database for updates. (For the At Work problem that inspired this investigation, we
+were wondering if the numbers of interactions with SQL Server may be a problem.)
 
 Elapsed time in ms: 962
+Elapsed time in ms second run: 569
 
 ## SyncFileToDbEFSimple
 
 Experiment using Entity Framework (EF) using a simple drop and write full list (this is how the original app worked). 
-The hope was that EF would be smart enough to just make the net changes, That assumption proved to be false.
 
-Results in one query to the database for updates
+Results in one query to the database for updates. 
+
+The hope was that EF would be smart enough to just make the net changes, That assumption proved to be false. I kept 
+this one around to document the process.
 
 Elapsed time in ms: 3635
+Elapsed time in ms second run: 4568
+
+## SyncFileToDbEFManuallyFilter
+
+Experiment using Entity Framework (EF) breaking the changes into the same 4 groups and making the changes with EF and 
+calling SaveChanges()
+
+Results in one query to the database for updates, I did have to do some tweeking to avoid additional queries when 
+issuing the EF command earlier in the process.
+
+The perf was slower than SyncFileToDbAdoNet for this small sample size, but since there are fewer SQL exchanges, it may
+perform better for larger batch sizes.
+
+Elapsed time in ms second run: 3490
+
+## Experiments
+
+### First Experiment
+In the [First_Experiment](https://github.com/jrcs3/SyncFileToDb/releases/tag/First_Experiment), I wrote 
+[SyncFileToDb](https://github.com/jrcs3/SyncFileToDb/tree/First_Experiment/SyncFileToDb), a simple C# console app 
+that broke up the lists into the 4 groups and make the changes with ADO.NET one at a time. 
+
+### Second Experiment
+In the [Second_Experiment](https://github.com/jrcs3/SyncFileToDb/releases/tag/Second_Experiment), I renamed *SyncFileToDb* to 
+[SyncFileToDbAdoNet](https://github.com/jrcs3/SyncFileToDb/tree/Second_Experiment/SyncFileToDbAdoNet), added a second console app 
+[SyncFileToDbEFSimple](https://github.com/jrcs3/SyncFileToDb/tree/Second_Experiment/SyncFileToDbEFSimple), moved the common
+CSV helper code to the DLL [CsvCommonLib](https://github.com/jrcs3/SyncFileToDb/tree/Second_Experiment/CsvCommonLib), and moved the
+sample data down one level to [data](https://github.com/jrcs3/SyncFileToDb/tree/Second_Experiment/data) so that it would be accessable 
+to both projects. This experiment was a flop.
+
+### Third Experiment
+In the [Third_Experiment](https://github.com/jrcs3/SyncFileToDb/releases/tag/Third_Experiment), added a third console app
+[SyncFileToDbEFManuallyFilter](https://github.com/jrcs3/SyncFileToDb/tree/Second_Experiment/SyncFileToDbEFManuallyFilter), moved the common
+Entity Framework (EF) code to the DLL [EFCommonLib](https://github.com/jrcs3/SyncFileToDb/tree/Second_Experiment/EFCommonLib). Under the 
+test conditions, *SyncFileToDbEFManuallyFilter* did not perform as well as *SyncFileToDbAdoNet*, but will do some more experimentation with
+the actual data during business hours.
+
+## Other Files
+
+- *EmployeeIdAndSsn.csv* - the CSV file I'm syncing with the database.
+- *EmployeeIdAndSsn.sql* - query to make the test table.
+- *messUpDb.sql* - script to mess up the table between runs.

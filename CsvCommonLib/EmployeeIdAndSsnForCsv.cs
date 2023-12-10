@@ -3,13 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CsvCommonLib
 {
-    public class EmployeeIdAndSsn
+    public class EmployeeIdAndSsnForCsv
     {
-        public EmployeeIdAndSsn()
-        {
-            
-        }
-        public EmployeeIdAndSsn(string employeeId, string ssn)
+        public EmployeeIdAndSsnForCsv(string employeeId, string ssn)
         {
             EmployeeId = employeeId;
             Ssn = FixSsn(ssn);
@@ -20,9 +16,7 @@ namespace CsvCommonLib
             return ssn.Replace("-", "");
         }
 
-        [Key]
         public string EmployeeId { get; set; }
         public string Ssn { get; set; }
-
     }
 }

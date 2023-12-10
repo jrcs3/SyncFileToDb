@@ -1,15 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CsvCommonLib;
-using SyncFileToDbEFSimple;
-using System.Formats.Asn1;
-using System.Globalization;
-using System.Reflection;
+using EFCommonLib;
 
 string directory = Tools.GetDirectoryInParent("data");
 
 string filePath = Path.Combine(directory, "EmployeeIdAndSsn.csv");
 
-List<EmployeeIdAndSsn> employeesCsv = Tools.GetCsv(filePath);
+List<EmployeeIdAndSsnForCsv> employeesCsv = Tools.GetCsv(filePath);
 
 string connectionString = "Server=(LocalDB)\\MSSQLLocalDB;Database=InsecureDB;Trusted_Connection=True;";
 
@@ -24,13 +21,12 @@ using (EmployeeAndSsnContext context = new EmployeeAndSsnContext(connectionStrin
 
     employeesDb.RemoveRange(employeesDb);
 
-    employeesDb.AddRange(employeesCsv);
-
-    //Console.WriteLine(employeesDb?.Sql);
+    foreach (var employee in employeesCsv)
+    {
+        employeesDb.Add(new EmployeeIdAndSsn { EmployeeId = employee.EmployeeId, Ssn = employee.Ssn });
+    }
 
     context.SaveChanges();
-
-    //var theList = employeesDb?.ToList();
 }
 watch.Stop();
 var elapsedMs = watch.ElapsedMilliseconds;
